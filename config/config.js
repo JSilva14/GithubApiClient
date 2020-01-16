@@ -1,13 +1,17 @@
-const config = {};
+const config = {
 
-config.api = {};
-config.api.PORT = process.env.PORT || 3000;
-
-config.githubApi = {}; 
-
-config.githubApi.baseUrl = 'https://api.github.com';
-config.githubApi.defaultV3AcceptHeader = 'application/vnd.github.v3+json';
-config.githubApi.userReposEndpoint = '/users/:username/repos';
-config.githubApi.repoBranchesEndpoint = '/repos/:owner/:repo/branches';
+    api: {
+        PORT: process.env.PORT || 3000,
+    },
+    
+    githubApi: {
+        username: 'testgithub-node',
+        personalAccessToken: '58ebef33c9b294639ab99a61fc40ae4797ad1fcb',
+        baseUrl: 'https://api.github.com',
+        defaultV3AcceptHeader: 'application/vnd.github.v3+json',
+        userReposEndpoint: '/users/:username/repos',
+        repoBranchesEndpoint: '/repos/:owner/:repo/branches'
+    }
+};
 
 module.exports = config;

@@ -38,17 +38,27 @@ function fetchUserRepositories(username) {
     let url = config.githubApi.baseUrl + config.githubApi.userReposEndpoint.replace(':username', username);
 
     return axios.get(url, {
-        auth: {
-            username: config.githubApi.username,
-            password: config.githubApi.personalAccessToken
-        },
-        headers: {
-            Accept: config.githubApi.defaultV3AcceptHeader
-        }
-    }).then((response) => {
-        return response;
-    })
+            auth: {
+                username: config.githubApi.username,
+                password: config.githubApi.personalAccessToken
+            },
+            headers: {
+                Accept: config.githubApi.defaultV3AcceptHeader
+            }
+        }).then((response) => {
+            return response;
+        })
         .catch((err) => {
+
+            if (err.response) {
+                console.log('Error while fetching user repositories');
+                console.log(err.response.status);
+                console.log(err.response.data);
+            }
+            else{
+                
+            }
+
             return err.response;
         });
 }
@@ -58,16 +68,16 @@ function fetchRepositoryBranches(owner, repo) {
     let url = config.githubApi.baseUrl + config.githubApi.repoBranchesEndpoint.replace(':owner', owner).replace(':repo', repo);
 
     return axios.get(url, {
-        auth: {
-            username: config.githubApi.username,
-            password: config.githubApi.personalAccessToken
-        },
-        headers: {
-            Accept: config.githubApi.defaultV3AcceptHeader
-        }
-    }).then((response) => {
-        return response;
-    })
+            auth: {
+                username: config.githubApi.username,
+                password: config.githubApi.personalAccessToken
+            },
+            headers: {
+                Accept: config.githubApi.defaultV3AcceptHeader
+            }
+        }).then((response) => {
+            return response;
+        })
         .catch((err) => {
             return err.response;
         });
