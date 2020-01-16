@@ -1,0 +1,15 @@
+{
+  "name": "github-node",
+  "version": "1.0.0",
+  "description": "API to request repository data for Github users",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "João Silva",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.19.1",
+    "express": "^4.17.1"
+  }
+}
