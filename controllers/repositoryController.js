@@ -1,10 +1,10 @@
 const githubService = require('../service/githubService');
 
 module.exports.getUserRepositoryInfo = function (req, res) {
-    githubService.buildUserRepoList(req.params.username)
+    githubService.getUserRepositoryInfo(req.params.username)
         .then((response) => {
             console.log(response);
-            res.send(response.data);
+            res.send(response);
         })
         .catch((err) => {
             console.error(err);

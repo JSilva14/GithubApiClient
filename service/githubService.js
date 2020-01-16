@@ -1,77 +1,73 @@
 const axios = require('axios');
 const config = require('../config/config');
 
+module.exports.getUserRepositoryInfo = async function (username) {
 
+    let userRepoList = [];
+    let userReposResult = await fetchUserRepositories(username);
 
-module.exports.buildUserRepoList = async function (username) {
+    for (const repository of userReposResult.data) {
 
-    let repoList = [];
+        let repoInfo = {
+            name: repository.name,
+            owner: repository.owner.login,
+            branches: []
+        }
+        let repositoryBranchesResult = await fetchRepositoryBranches(username, repository.name);
 
-    let repoInfo = {
-        name: "",
-        owner: "",
-        branches: []
-    };
+        for (const branch of repositoryBranchesResult.data) {
 
-    let branchInfo = {
-        name: "",
-        lastCommitSHA: ""
+            let branchInfo = {
+                name: branch.name,
+                lastCommitSHA: branch.commit.sha
+            }
+            repoInfo.branches.push(branchInfo);
+        }
+
+        if (!repository.fork) {
+            userRepoList.push(repoInfo);
+        }
     }
 
-    let userRepositoriesResult = await getUserRepositories(username);
-
-    userRepositoriesResult.data.forEach(async repo => {
-        repoInfo.owner = repo.owner.login;
-        repoInfo.name = repo.name;
-        await getRepositoryBranches(username, repo.name)
-            .then((branchList) => {
-                branchList.data.forEach((branch) => {
-                    branchInfo.name=branch.name;
-                    branchInfo.lastCommitSHA=branch.commit.sha;
-
-                    repoInfo.branches.push(branchInfo);
-                });
-
-                
-            })
-            .catch((err) => {
-                console.error(err);
-                //res.send(err.response);
-            });
-
-            repoList.push(repoInfo);
-    });
-
-    return repoInfo;
+    return userRepoList;
 }
 
-function getUserRepositories(username) {
+
+function fetchUserRepositories(username) {
 
     let url = config.githubApi.baseUrl + config.githubApi.userReposEndpoint.replace(':username', username);
 
     return axios.get(url, {
-            headers: {
-                Accept: config.githubApi.defaultV3AcceptHeader
-            }
-        }).then((response) => {
-            return response;
-        })
+        auth: {
+            username: config.githubApi.username,
+            password: config.githubApi.personalAccessToken
+        },
+        headers: {
+            Accept: config.githubApi.defaultV3AcceptHeader
+        }
+    }).then((response) => {
+        return response;
+    })
         .catch((err) => {
             return err.response;
         });
 }
 
-function getRepositoryBranches(owner, repo) {
+function fetchRepositoryBranches(owner, repo) {
 
     let url = config.githubApi.baseUrl + config.githubApi.repoBranchesEndpoint.replace(':owner', owner).replace(':repo', repo);
 
     return axios.get(url, {
-            headers: {
-                Accept: config.githubApi.defaultV3AcceptHeader
-            }
-        }).then((response) => {
-            return response;
-        })
+        auth: {
+            username: config.githubApi.username,
+            password: config.githubApi.personalAccessToken
+        },
+        headers: {
+            Accept: config.githubApi.defaultV3AcceptHeader
+        }
+    }).then((response) => {
+        return response;
+    })
         .catch((err) => {
             return err.response;
         });
