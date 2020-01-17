@@ -20,7 +20,7 @@ const validate = (req, res, next) => {
     }
   
     return res.status(406).json({
-      status: '406 NOT ACCEPTABLE',
+      status: 406,
       message: errors.errors[0].msg
     });
 
