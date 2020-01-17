@@ -1,74 +1,6 @@
 const axios = require('axios');
 const config = require('../config/config');
 
-//Default unexpected error message
-const unexpectedErrorString = 'An unexpected error occurred getting user repository info';
-
-//Default error response object
-var errorResponse = {
-    status: 500,
-    message: unexpectedErrorString
-}
-
-/**
- * Builds a list of repositories for the given user, each repository object contains a list of it's branches
- * 
- * @param {string} username 
- */
-async function getUserRepositoryInfo(username) {
-
-    try {
-        let userRepoList = [];
-        let getUserReposResponse = await fetchGithubUserRepositories(username);
-
-        if (getUserReposResponse.hasOwnProperty('status') && getUserReposResponse.status != 200) {
-
-            errorResponse.status = getUserReposResponse.status;
-            errorResponse.message = getUserReposResponse.statusText;
-            return errorResponse;
-        }
-
-        for (const repository of getUserReposResponse.data) {
-
-            let repoInfo = {
-                name: repository.name,
-                owner: repository.owner.login,
-                branches: []
-            }
-
-            let getRepositoryBranchesResponse = await fetchGithubRepositoryBranches(username, repository.name);
-
-            if (getRepositoryBranchesResponse.hasOwnProperty('status') &&
-                getRepositoryBranchesResponse.status != 200) {
-
-                errorResponse.status = getRepositoryBranchesResponse.status;
-                errorResponse.message = getRepositoryBranchesResponse.statusText;
-                return errorResponse;
-            }
-
-            for (const branch of getRepositoryBranchesResponse.data) {
-
-                let branchInfo = {
-                    name: branch.name,
-                    lastCommitSHA: branch.commit.sha
-                }
-                repoInfo.branches.push(branchInfo);
-            }
-
-            if (!repository.fork) {
-                userRepoList.push(repoInfo);
-            }
-        }
-
-        return userRepoList;
-
-    } catch (err) {
-        console.log('An unexpected error occurred getting user repository info');
-        console.log(err.message);
-
-        return errorResponse;
-    }
-}
 
 /**
  * Makes a request to the Github API to fetch all repositories owned by the given user
@@ -141,4 +73,5 @@ function fetchGithubRepositoryBranches(owner, repository) {
 
 }
 
-module.exports.getUserRepositoryInfo = getUserRepositoryInfo;
+module.exports.fetchGithubUserRepositories = fetchGithubUserRepositories;
+module.exports.fetchGithubRepositoryBranches = fetchGithubRepositoryBranches;

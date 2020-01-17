@@ -1,8 +1,8 @@
-const githubService = require('../service/githubService');
+const service = require('../service/service');
 
 module.exports.getUserRepositoryInfo = function (req, res) {
 
-        githubService.getUserRepositoryInfo(req.params.username)
+        service.getUserRepositoryInfo(req.params.username)
         .then((response) => {
             //console.log(response);
             res.send(response);
