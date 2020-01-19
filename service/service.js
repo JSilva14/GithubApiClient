@@ -63,7 +63,7 @@ async function getUserRepositoryInfo(username) {
         return userRepoList;
 
     } catch (err) {
-        console.log('An unexpected error occurred getting user repository info');
+        console.log(unexpectedErrorString);
         console.log(err.message);
 
         return errorResponse;
