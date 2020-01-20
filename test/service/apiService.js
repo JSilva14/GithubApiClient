@@ -5,7 +5,7 @@ const apiService = require('../../service/apiService');
 const githubService = require('../../service/githubService');
 
 
-describe('API Service Unit Tests', function () {
+describe('API SERVICE Unit Tests', function () {
 
     describe('API SERVICE getUserRepositoryInfo', function () {
 

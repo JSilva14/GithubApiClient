@@ -11,7 +11,7 @@ Testing tools:
 * [mocha](https://www.npmjs.com/package/mocha) as main testing framework,
 * [chai](https://www.npmjs.com/package/chai) as assertion library,
 * [chai-http](https://www.npmjs.com/package/chai-http) to test the api endpoints
-* [mock-req-res](https://www.npmjs.com/package/mock-req-res) to mock req and res objects for middleware testing,
+* [mock-req-res](https://www.npmjs.com/package/mock-req-res) to stub and spy req and res objects for middleware testing,
 * [sinon](https://www.npmjs.com/package/sinon) to spy method calls;
 
 ## Prerequisites
@@ -46,7 +46,7 @@ Clone the repository into your prefered directory.
 	- The easiest way to do this is to `docker stop` all containers that are related to this application and then perform `docker system prune -a --volumes` 
 	
 
-**In your terminal, navigate to the "deployment" directory that contains the docker-compose.yaml file and execute the following command:**
+**In your terminal, navigate to the "github-node" directory that contains the docker-compose.yaml file and execute the following command:**
 
 `docker-compose up` or `docker-compose up -d` for detached mode. (This may take a few minutes the first time)
 
@@ -55,7 +55,7 @@ Clone the repository into your prefered directory.
 
 ### * To run or debug using the IDE:
 
-In a terminal, navigate to the root folder (which contains index.js) and run `node index`
+In a terminal, navigate to the root folder (which contains index.js) and run `node index` or `npm run`
 
 
 ## How to use
@@ -97,8 +97,35 @@ The project is split into 5 main components:
 4. **service**
     * **apiService.js** - The service layer which is called by the controller. Contains a `getUserRepositoryInfo` method which builds the object with the user's repository data and returns it to the controller to be send as a response. It uses `githubService` to get information about user repositories and branches.
 
-    * **githubService.js** - Contains the actual methods that perform HTTP requests to the Github API.
+    * **githubService.js** - Contains the actual methods that perform HTTP requests to the Github API. 
+    **NOTE:** Since unauthenticated requests to the Github API are limited to 60 per hour. A github user has been created (testgithub-node) and it's credentials are stored in config.js (**username** and **personal access token**). These credentials are used to make authenticated requests to the Github API, thus allowing 5000 requests per hour. 
 
 
 5. **test**
+    The test folder is structured similarly to the project structure. Each component has it's own test file.
+    **Every test has a detailed description on what it is testing**
     
+    * repositoryRoutes.js contains integration tests which test the whole flow of the api.
+    * repositoryController.js contains unit tests for the controller component. 
+    * cache.js contains unit tests for the cache component.
+    * apiService.js contains unit tests for the main service component of the application.
+    * githubService.js contains unit tests for the component which makes HTTP requests with Github
+
+    **Running the tests:**
+    * in a terminal, navigate to the **github-node** directory and run `npm test`
+
+**Basic Flow**
+
+When a request is made to the **/api/user/:username** endpoint, it gets picked up by the route specified in **repositoryRoutes.js**. In this step, request validation (checks for application/json header) and cache middleware are called. If a response for the specified username exists in cache, the controller is not called. If it is not cached, the **repositoryController** **getUserRepositoryInfo** method is then called. 
+
+The controller method basically takes the **username** parameter and calls the service layer, specifically the **apiService.getUserRepositoryInfo** method.
+
+This method is tasked with building the response and makes use of another service **(githubService)** to request repository and branch data from Github. 
+
+After the data is retrieved, the response is build and served back to the client.
+ 
+
+## Teardown the docker environment
+
+To teardown the docker containers, images and volumes, simply go back to the directory containing the docker-compose.yaml file and execute `docker-compose down` followed by `docker system prune -a --volumes`.
+This will delete all stopped containers, and images and volumes not currently being used so remember to watch out for any other docker resources you may need so they don't get tore down.

@@ -36,7 +36,7 @@ function fetchGithubUserRepositories(username) {
                 console.error('Unexpected error fetching user repositories');
                 console.error(error.message);
 
-                return err.response;
+                return err.message;
             }
 
         });
@@ -65,10 +65,24 @@ function fetchGithubRepositoryBranches(owner, repository) {
                 Accept: config.githubApi.defaultV3AcceptHeader
             }
         }).then((response) => {
+            
             return response;
         })
         .catch((err) => {
-            return err.response;
+
+            if (err.response) {
+                console.error('Error while fetching repository branches');
+                console.error(`Status: ${err.response.status}`);
+                console.error(`Response: ${JSON.stringify(err.response.data)}`);
+
+                return err.response;
+
+            } else {
+                console.error('Unexpected error fetching repository branches');
+                console.error(error.message);
+
+                return err.message;
+            }
         });
 
 }
