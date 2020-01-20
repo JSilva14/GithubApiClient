@@ -105,7 +105,11 @@ The project is split into 5 main components:
 
 
 5. **test**
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> master
     The test folder is structured similarly to the project structure. Each component has it's own test file.
     **Every test has a detailed description on what it is testing**
     
