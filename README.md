@@ -105,6 +105,7 @@ The project is split into 5 main components:
 
 
 5. **test**
+    
     The test folder is structured similarly to the project structure. Each component has it's own test file.
     **Every test has a detailed description on what it is testing**
     
@@ -115,6 +116,7 @@ The project is split into 5 main components:
     * githubService.js contains unit tests for the component which makes HTTP requests with Github
 
     **Running the tests:**
+    
     * in a terminal, navigate to the **github-node** directory and run `npm test`
 
 **Basic Flow**
