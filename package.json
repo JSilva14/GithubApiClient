@@ -4,6 +4,7 @@
   "description": "API to request repository data for Github users",
   "main": "index.js",
   "scripts": {
+    "start": "node index",
     "test": "mocha --recursive"
   },
   "author": "João Silva",

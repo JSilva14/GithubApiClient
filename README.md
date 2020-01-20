@@ -24,7 +24,7 @@ Testing tools:
 
 #### For local setup
 * [Node LTS](https://nodejs.org/en/)
-* [NPM] - included with Node LTS
+* **NPM** - included with Node LTS
 
 
 ## Getting Started
@@ -74,21 +74,31 @@ After deploying the API open a browser or Postman and make a request to the foll
 
 The project is split into 5 main components:
 
-1. index.js
+1. **index.js**
     * App entry point. Contains the basic express server setup.
-    * Initializes the server on the port specified in the PORT environment variable. If it is not specified, it uses port 3000.
+    * Initializes the server on the port specified in config.api.PORT. 
     * Routes all requests made to **/api** to repositoryRoutes.js.
 
-2. config
-    * config.js
-    Contains configuration data for the API and data used to make requests to the Github API
+2. **config**
+    * config.js - Contains configuration data for the API and data used to make requests to the Github API
 
-3. api
-    * routes
-        * repositoryRoutes.js
+3. **api**
+    * **routes**
+        * **repositoryRoutes.js** - Contains a single route which calls the request validation and cache middlewares as well as the appropriate controller.
 
-    * middleware
-    * controllers
-4. service
-5. test
+    * **middleware**
+        * **cache.js** - Contains response caching logic used to store the responses in a memory cache using the username request parameter as key. For each new request, it checks if a response is already cached for the provided username parameter, which avoids having to make a new request to the Github API. 
+
+        * **requestValidator.js** - Contains request validation logic. Builds an appropriate error response if the request is not valid.
+
+    * **controllers**
+        * **repositoryController.js** - Contains a single controller which is called when a request is made to "/api/user/:username". The controller calls the service layer to get repository data about the specified user. 
+
+4. **service**
+    * **apiService.js** - The service layer which is called by the controller. Contains a `getUserRepositoryInfo` method which builds the object with the user's repository data and returns it to the controller to be send as a response. It uses `githubService` to get information about user repositories and branches.
+
+    * **githubService.js** - Contains the actual methods that perform HTTP requests to the Github API.
+
+
+5. **test**
     

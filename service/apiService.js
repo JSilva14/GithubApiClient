@@ -1,12 +1,12 @@
-const githubService = require('./github');
+const githubService = require('./githubService');
 
 //Default unexpected error message
 const unexpectedErrorString = 'An unexpected error occurred getting user repository info';
 
 //Default error response object
-var errorResponse = {
-    status: 500,
-    message: unexpectedErrorString
+let errorResponse = {
+    status: '',
+    message: ''
 }
 
 /**
@@ -65,6 +65,8 @@ async function getUserRepositoryInfo(username) {
     } catch (err) {
         console.error(unexpectedErrorString);
         console.error(err.message);
+        errorResponse.status = 500;
+        errorResponse.message = unexpectedErrorString;
 
         return errorResponse;
     }

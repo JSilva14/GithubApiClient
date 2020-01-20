@@ -7,7 +7,7 @@ const mCache = require('memory-cache');
 const expressValidator = require('express-validator');
 
 const server = require('../../../index');
-const service = require('../../../service/service');
+const apiService = require('../../../service/apiService');
 
 chai.use(chaiHttp);
 
@@ -95,7 +95,7 @@ describe("ROUTE INTEGRATION TESTS", function () {
 
             mCache.put(username, mockValidResponse);
 
-            let serviceSpy = sinon.spy(service);
+            let serviceSpy = sinon.spy(apiService);
 
             chai.request(server)
                 .get(`/api/user/${username}`)

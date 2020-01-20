@@ -1,8 +1,17 @@
-const service = require('../../service/service');
+const apiService = require('../../service/apiService');
+
+//Default unexpected error message
+const unexpectedErrorString = 'An unexpected error occurred getting user repository info';
+
+//Default error response object
+var errorResponse = {
+    status: 500,
+    message: unexpectedErrorString
+}
 
 function getUserRepositoryInfo(req, res) {
-
-        service.getUserRepositoryInfo(req.params.username).then((response) => {
+    
+        apiService.getUserRepositoryInfo(req.params.username).then((response) => {
             
          /* Check if the response is an error message (only error messages contain status)
             and set the actual HTTP status of res equal to the error status. 
@@ -14,8 +23,9 @@ function getUserRepositoryInfo(req, res) {
             res.send(response);
         })
         .catch((err) => {
-            //console.error(err);
-            res.send(err);
+            console.error('Error ocurred at controller level');
+            console.error(JSON.stringify(err));
+            res.status(500).send(errorResponse);
         }); 
 }
 

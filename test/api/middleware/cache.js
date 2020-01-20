@@ -12,6 +12,9 @@ const cacheDurationMiliseconds = 5000;
 
 describe("CACHE UNIT TESTS", function () {
 
+    let req;
+    let res;
+
     //clear the cache before starting the tests
     before(function () {
         mCache.clear();
@@ -20,12 +23,12 @@ describe("CACHE UNIT TESTS", function () {
     //Clear cache after each test
     afterEach(function () {
         mCache.clear();
-    })
+    });
 
     it("Should store response body if it is not already cached for the provided username", (done) => {
 
-        let req = mockReqRes.mockRequest({params: {username: username}});
-        let res = mockReqRes.mockResponse({body: mockResponseBody});
+        req = mockReqRes.mockRequest({params: {username: username}});
+        res = mockReqRes.mockResponse({body: mockResponseBody});
         
         //call cache middleware using mocked req and res
         cache.cache(cacheDurationMiliseconds)(req, res, ()=>{});
@@ -44,8 +47,8 @@ describe("CACHE UNIT TESTS", function () {
         //create a spy to check if mCache.put is called again
         let cacheSpy = sinon.spy(mCache);
 
-        let req = mockReqRes.mockRequest({params: {username: username}});
-        let res = mockReqRes.mockResponse({body: mockResponseBody});
+        req = mockReqRes.mockRequest({params: {username: username}});
+        res = mockReqRes.mockResponse({body: mockResponseBody});
         
         //call cache middleware using mocked req and res
         cache.cache(cacheDurationMiliseconds)(req, res, ()=>{});

@@ -1,0 +1,12 @@
+version: '3.7'
+
+services:
+    github-node-api:
+      image: github-node-api
+      build: .
+      container_name: github-node-api
+      expose:
+        - 3000
+      ports:
+        - "3000:3000"
+  
