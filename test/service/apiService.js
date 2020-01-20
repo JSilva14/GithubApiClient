@@ -98,7 +98,7 @@ describe('API SERVICE Unit Tests', function () {
 
                 let getUserRepositoryInfoResult = await apiService.getUserRepositoryInfo('mockUser');
 
-                //Check if the response is correct
+                //Check if fetchRepositoryBranches was called the expected amount of times
                 assert.equal(githubServiceStub.fetchRepositoryBranches.callCount, expectedCallCount);
 
             });
@@ -132,6 +132,7 @@ describe('API SERVICE Unit Tests', function () {
                     }]
                 };
 
+                //Expected response should not have the repository with fork:true
                 let expectedResponse = '[{"name":"mockRepo2","owner":"mockLogin",' +
                     '"branches":[{"name":"mockBranch","lastCommitSHA":"mockSha"}]}]';
 
@@ -157,7 +158,7 @@ describe('API SERVICE Unit Tests', function () {
 
                 let getUserRepositoryInfoResult = await apiService.getUserRepositoryInfo('mockUser');
 
-                //Check if the response is correct
+                //Check if the response status is correct
                 assert.equal(getUserRepositoryInfoResult.status, failedFetchGithubUserRepositoriesResponse.status);
 
             });
@@ -174,7 +175,7 @@ describe('API SERVICE Unit Tests', function () {
 
                 let getUserRepositoryInfoResult = await apiService.getUserRepositoryInfo('mockUser');
 
-                //Check if the response is correct
+                //Check if the response status is correct
                 assert.equal(getUserRepositoryInfoResult.status, failedFetchRepositoryBranchesResponse.status);
 
             });
@@ -219,7 +220,7 @@ describe('API SERVICE Unit Tests', function () {
 
                 let getUserRepositoryInfoResult = await apiService.getUserRepositoryInfo('mockUser');
 
-                //Check if res.status was called with the correct value
+                //Check if the response is correct
                 assert.equal(JSON.stringify(getUserRepositoryInfoResult), JSON.stringify(errorResponse));
 
             });

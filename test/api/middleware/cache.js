@@ -41,8 +41,8 @@ describe("CACHE UNIT TESTS", function () {
 
     it("Should NOT store response body if it is already cached for the provided username", (done) => {
 
-        //cache the mockResponseBody using username as key
-        mCache.put(username, mockResponseBody);
+        //cache the mockResponseBody for 10 seconds using username as key
+        mCache.put(username, mockResponseBody, 10000);
 
         //create a spy to check if mCache.put is called again
         let cacheSpy = sinon.spy(mCache);
@@ -54,6 +54,7 @@ describe("CACHE UNIT TESTS", function () {
         cache.cache(cacheDurationMiliseconds)(req, res, ()=>{});
         res.send(mockResponseBody);
 
+        //check that no cache storage operations were made
         assert(cacheSpy.put.notCalled,
             'Response was stored again in cache even though it already existed');        
 

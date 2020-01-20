@@ -1,6 +1,10 @@
 const axios = require('axios');
 const config = require('../config/config');
 
+const errorFetchingRepositories = 'Error while fetching user repositories';
+const errorFetchingBranches = 'Error while fetching repository branches';
+const unexpectedErrorMessage = 'Unexpected error fetching user repositories';
+
 
 /**
  * Makes a request to the Github API to fetch all repositories owned by the given user
@@ -26,14 +30,14 @@ function fetchGithubUserRepositories(username) {
         .catch((err) => {
 
             if (err.response) {
-                console.error('Error while fetching user repositories');
+                console.error(errorFetchingRepositories);
                 console.error(`Status: ${err.response.status}`);
                 console.error(`Response: ${JSON.stringify(err.response.data)}`);
 
                 return err.response;
 
             } else {
-                console.error('Unexpected error fetching user repositories');
+                console.error(unexpectedErrorMessage);
                 console.error(error.message);
 
                 return err.message;
@@ -71,14 +75,14 @@ function fetchGithubRepositoryBranches(owner, repository) {
         .catch((err) => {
 
             if (err.response) {
-                console.error('Error while fetching repository branches');
+                console.error(errorFetchingBranches);
                 console.error(`Status: ${err.response.status}`);
                 console.error(`Response: ${JSON.stringify(err.response.data)}`);
 
                 return err.response;
 
             } else {
-                console.error('Unexpected error fetching repository branches');
+                console.error(unexpectedErrorMessage);
                 console.error(error.message);
 
                 return err.message;

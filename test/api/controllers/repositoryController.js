@@ -6,9 +6,9 @@ const repositoryController = require('../../../api/controllers/repositoryControl
 const apiService = require('../../../service/apiService');
 
 
-describe('Repository Controller Unit Tests', function () {
+describe('REPOSITORY CONTROLLER Unit Tests', function () {
 
-    describe('Controller getUserRepositoryInfo', function () {
+    describe('REPOSITORY CONTROLLER getUserRepositoryInfo', function () {
 
         //Req and Res objects to be passed to controller
         let req;

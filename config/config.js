@@ -2,6 +2,7 @@ const config = {
 
     api: {
         PORT: process.env.PORT || 3000,
+        cacheDuration: 120000
     },
     
     githubApi: {

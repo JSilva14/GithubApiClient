@@ -1,5 +1,6 @@
 const sinon = require('sinon');
 const chai = require('chai');
+const expect = chai.expect;
 const axios = require('axios');
 const assert = chai.assert;
 const githubService = require('../../service/githubService');
@@ -11,13 +12,20 @@ describe('GITHUB SERVICE Unit Tests', function () {
 
         it('fetchGithubUserRepositories gets correct response', async () => {
 
+                //Since the response to this request is too large, we only check if the number and name 
+                //of repositories is correct to prevent excess clutter
                 let expectedRepositoryNumber = 2;
+                let expectedRepositoryNames = ['test', 'test2'];
+
+                let actualRepositoryNames = [];
 
                 let fetchGithubUserRepositoriesResult = await githubService.fetchGithubUserRepositories('testgithub-node');
 
+                actualRepositoryNames.push(fetchGithubUserRepositoriesResult.data[0].name, fetchGithubUserRepositoriesResult.data[1].name);
+
                 //Check if the response is correct
                 assert.equal(fetchGithubUserRepositoriesResult.data.length, expectedRepositoryNumber);
-
+                assert.equal(JSON.stringify(actualRepositoryNames), JSON.stringify(expectedRepositoryNames));
             }); 
         
         it('fetchGithubRepositoryBranches gets correct response', async () => {
@@ -33,7 +41,6 @@ describe('GITHUB SERVICE Unit Tests', function () {
 
                 //Check if the response is correct
                 assert.equal(JSON.stringify(fetchGithubRepositoryBranchesResult.data), expectedResponse);
-
             });
     });
 
