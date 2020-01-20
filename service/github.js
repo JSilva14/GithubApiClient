@@ -26,15 +26,15 @@ function fetchGithubUserRepositories(username) {
         .catch((err) => {
 
             if (err.response) {
-                console.log('Error while fetching user repositories');
-                console.log(`Status: ${err.response.status}`);
-                console.log(`Response: ${JSON.stringify(err.response.data)}`);
+                console.error('Error while fetching user repositories');
+                console.error(`Status: ${err.response.status}`);
+                console.error(`Response: ${JSON.stringify(err.response.data)}`);
 
                 return err.response;
 
             } else {
-                console.log('Unexpected error fetching user repositories');
-                console.log(error.message);
+                console.error('Unexpected error fetching user repositories');
+                console.error(error.message);
 
                 return err.response;
             }

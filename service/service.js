@@ -63,8 +63,8 @@ async function getUserRepositoryInfo(username) {
         return userRepoList;
 
     } catch (err) {
-        console.log(unexpectedErrorString);
-        console.log(err.message);
+        console.error(unexpectedErrorString);
+        console.error(err.message);
 
         return errorResponse;
     }

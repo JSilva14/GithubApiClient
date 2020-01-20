@@ -1,16 +1,18 @@
 const mCache = require('memory-cache');
 
-function cache(duration){
+
+function cache(durationMiliseconds){
     return (req, res, next) => {
       let key = req.params.username;
       let cachedBody = mCache.get(key);
       if (cachedBody) {
+        console.log('Retrieved response from cache');
         res.send(JSON.parse(cachedBody));
         return;
       } else {
         res.sendResponse = res.send;
         res.send = (body) => {
-          mCache.put(key, body, duration * 1000);
+          mCache.put(key, body, durationMiliseconds);
           res.sendResponse(body);
         }
         next();
@@ -18,12 +20,4 @@ function cache(duration){
     }
   }
 
-  const getCachedValue = (key) => {
-    let cachedBody = mCache.get(key);
-    if (cachedBody) {
-      return cachedBody;
-    }
-  }
-
   module.exports.cache = cache;
-  module.exports.getCachedValue = getCachedValue;

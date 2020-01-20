@@ -3,9 +3,11 @@ const chaiHttp = require('chai-http');
 const should = chai.should();
 const assert = chai.assert;
 const sinon = require('sinon');
+const mCache = require('memory-cache');
+const expressValidator = require('express-validator');
+
 const server = require('../../../index');
 const service = require('../../../service/service');
-const mCache = require('memory-cache');
 
 chai.use(chaiHttp);
 
@@ -25,14 +27,20 @@ const mockInvalidHeaderResponse = '{"status":406,"message":"Accept header should
 const mockNotFoundResponse = '{"status":404,"message":"Not Found"}';
 
 
+describe("ROUTE INTEGRATION TESTS", function () {
 
-describe("GET /api/user/:username", function () {
+    describe("GET /api/user/:username", function () {
 
-    describe("Integration tests", function () {
+        //increase the default mocha timeout from 2 seconds to 15
+        //since these tests perform http calls which can take longer than 2 seconds
+        this.timeout(15000);
 
-        this.timeout(10000);
+        //clear the cache before starting the tests
+        before(function(){
+           mCache.clear(); 
+        });
 
-        //Clear cache before each test
+        //Clear cache after each test
         afterEach(function () {
             mCache.clear();
         })
@@ -71,7 +79,7 @@ describe("GET /api/user/:username", function () {
                 });
         });
 
-        it("Should store successful responses in cache", (done) => {
+        it("Should store successful responses in cache if they don't already exist", (done) => {
             chai.request(server)
                 .get(`/api/user/${username}`)
                 .set(acceptHeader, applicationJson)
@@ -83,7 +91,7 @@ describe("GET /api/user/:username", function () {
 
         });
 
-        it("Gets response from cache if it exists", (done) => {
+        it("Should get response from cache if it exists for the provided username", (done) => {
 
             mCache.put(username, mockValidResponse);
 

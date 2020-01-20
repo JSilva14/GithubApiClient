@@ -9,14 +9,26 @@ const applicationJson = 'application/json';
 const acceptHeaderError = 'Accept header should be application/json';
 const unexpectedError = 'An unexpected error has occurred';
 
-
-const requestValidationRules = () => {
+/**
+ * Applies validation rules to the request
+ * 
+ * @returns An array of errors obtained
+ */
+function requestValidationRules() {
   return [
     header(acceptHeaderKey, acceptHeaderError).equals(applicationJson)
   ]
 }
 
-const validate = (req, res, next) => {
+/**
+ * Builds an error response based on the first error in the array returned by requestValidationRules().
+ * If the error array is empty, calls next().
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+function validate(req, res, next) {
 
   const errors = validationResult(req);
 
@@ -39,10 +51,7 @@ const validate = (req, res, next) => {
       message: unexpectedError
     })
   }
-
 }
 
-module.exports = {
-  requestValidationRules,
-  validate,
-}
+module.exports.requestValidationRules = requestValidationRules;
+module.exports.validate = validate;
