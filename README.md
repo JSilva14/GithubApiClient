@@ -3,11 +3,14 @@
 Express API to retrieve information about Github user repositories. 
 
 NPM packages used:
+
 * [express](https://www.npmjs.com/package/express) to set up the routes,
 * [express-validator](https://www.npmjs.com/package/express-validator) to validate the requests,
 * [memory-cache](https://www.npmjs.com/package/memory-cache) to cache api responses,
 * [axios](https://www.npmjs.com/package/memory-cache) to make requests to the Github API;
+
 Testing tools:
+
 * [mocha](https://www.npmjs.com/package/mocha) as main testing framework,
 * [chai](https://www.npmjs.com/package/chai) as assertion library,
 * [chai-http](https://www.npmjs.com/package/chai-http) to test the api endpoints
