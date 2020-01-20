@@ -20,7 +20,7 @@ describe('GITHUB SERVICE Unit Tests', function () {
 
             }); 
         
-        it('fetchGithubUserRepositories gets correct response', async () => {
+        it('fetchGithubRepositoryBranches gets correct response', async () => {
 
                 let expectedResponse = '[{"name":"master",' +
                     '"commit":{' +
